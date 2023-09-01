@@ -1,24 +1,24 @@
-export const SET_MATRIX_ROWS = "SET_MATRIX_ROWS";
-export const SET_MATRIX_COLS = "SET_MATRIX_COLS";
-export const SET_MATRIX_CELLS = "SET_MATRIX_CELLS";
+export const INIT_MATRIX_ROWS = "INIT_MATRIX_ROWS";
+export const INIT_MATRIX_COLS = "INIT_MATRIX_COLS";
+export const INIT_MATRIX_CELLS = "INIT_MATRIX_CELLS";
 
-export const setColumnsAmount = (value: number) => {
+export const initColumnsAmount = (value: number) => {
   return {
-    type: SET_MATRIX_COLS,
+    type: INIT_MATRIX_COLS,
     payload: value,
   };
 };
 
-export const setRowsAmount = (value: number) => {
+export const initRowsAmount = (value: number) => {
   return {
-    type: SET_MATRIX_ROWS,
+    type: INIT_MATRIX_ROWS,
     payload: value,
   };
 };
 
-export const setCellsAmount = (value: number) => {
+export const initCellsAmount = (value: number) => {
   return {
-    type: SET_MATRIX_CELLS,
+    type: INIT_MATRIX_CELLS,
     payload: value,
   };
 };

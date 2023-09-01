@@ -1,0 +1,51 @@
+.Matrix {
+  width: fit-content;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.Matrix-btn {
+  margin-bottom: 20px;
+}
+
+.Matrix-table,
+.Matrix-table__row {
+  display: flex;
+}
+
+.Matrix-table__row-titles,
+.Matrix-table__column-titles,
+.Matrix-table__delete-row-icons {
+  display: flex;
+  justify-content: space-around;
+  font-weight: bold;
+}
+
+.Matrix-table__row-titles,
+.Matrix-table__delete-row-icons {
+  flex-direction: column;
+}
+
+.Matrix-table__row-titles {
+  margin-right: 10px;
+}
+
+.Matrix-table__delete-row-icons {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.Matrix-table__data {
+  display: grid;
+}
+
+.Matrix-table__column-titles {
+  margin-bottom: 10px;
+}
+
+.Matrix-table__column {
+  padding: 10px;
+  margin: 1px;
+  border: 1px solid rgba(5, 5, 5, 0.3);
+  border-radius: 5px;
+}

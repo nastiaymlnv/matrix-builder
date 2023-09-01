@@ -1,9 +1,14 @@
 import {
-  setColumnsAmount,
-  setRowsAmount,
-  setCellsAmount,
+  initColumnsAmount,
+  initRowsAmount,
+  initCellsAmount,
 } from "./matrixDimensionActions";
 
 import matrixParamsReducer from "./matrixDimensionReducer";
 
-export { setColumnsAmount, setRowsAmount, setCellsAmount, matrixParamsReducer };
+export {
+  initColumnsAmount,
+  initRowsAmount,
+  initCellsAmount,
+  matrixParamsReducer,
+};
