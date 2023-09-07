@@ -36,7 +36,7 @@ export const deleteRow = (value: { id: string; index: number, newColsSum: number
   };
 };
 
-export const increaseCellAmount = (value: [number, number]) => {
+export const increaseCellAmount = (value: {rowNum: number, cellIndex: number}) => {
   return {
     type: INCREASE_CELL_AMOUNT,
     payload: value

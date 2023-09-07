@@ -51,7 +51,7 @@ export const Matrix = () => {
     const matrixColsAvg = useSelector(
         (state: RootState) => state.matrixData.matrixColsAvg,
     );
-    const [nearestValues, setNearestValues] = useState([]);
+    const [nearestValues, setNearestValues] = useState([] as Array<{ id: string; amount: number }>);
     const [sumPercentArray, setSumPercentArray] = useState<string[]>(['0%', '0%', '0%']);
     const [isHovered, setIsHovered] = useState(false);
     const [isHoveredRowId, setIsHoveredRowId] = useState('');
@@ -104,12 +104,12 @@ export const Matrix = () => {
             }
         }
 
-        dispatch(increaseCellAmount([rowNum, cellIndex]));
+        dispatch(increaseCellAmount({rowNum, cellIndex}));
     }
 
     const findNearestCellNumbers = (id: string, amount: number) => {
         const currValue = amount;
-        const cellsValues = [].concat(...matrixData).filter((cell: { id: string; amount: number }) => cell.id !== id);
+        const cellsValues = ([] as Array<{ id: string; amount: number }>).concat(...matrixData).filter((cell: { id: string; amount: number }) => cell.id !== id);
 
         cellsValues.sort((a: { id: string; amount: number }, b: { id: string; amount: number }) => {
             return Math.abs(currValue - a.amount) - Math.abs(currValue - b.amount);
@@ -201,7 +201,7 @@ export const Matrix = () => {
                                         >
                                             {item.amount}
                                         </div>
-                                    ))
+                                    ))  
                                     }
                                     <div 
                                         key={rowId} 
@@ -233,9 +233,6 @@ export const Matrix = () => {
                         ))}
                         <span /> 
                     </Col>
-                    {/* <div className={cn(css["Matrix-table__cell-data"], css["Matrix-table__cell-data_percentage"])} style={{ "--percent": '80%' }}> 
-                        10%
-                    </div> */}
                 </section>
             </div>
         )
