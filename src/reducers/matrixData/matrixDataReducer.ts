@@ -14,10 +14,7 @@ type deleteRowActionType = {
 type actionType =
   | {
       type: "INIT_MATRIX_VALUES" | "INIT_MATRIX_ROWS_IDS" | "ADD_NEW_ROW" | "INCREASE_CELL_AMOUNT";
-      payload: { id: number | string; amount: number }[][] 
-      | string[] 
-      | string 
-      | number[]
+      payload: { id: string; amount: number }[][]
     }
   | deleteRowActionType;
 
@@ -68,9 +65,8 @@ const matrixParamsReducer = (
         matrixColsAvg: action.payload.newColsAvg,
       };
     }
-    case INCREASE_CELL_AMOUNT:
-      {
-      const currRow = action.payload[0] ;
+    case INCREASE_CELL_AMOUNT: {
+      const currRow = action.payload[0];
       const currCell = action.payload[1];
       const newState = { ...state };
 

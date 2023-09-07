@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState, CSSProperties } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import cn from "classnames";
@@ -20,7 +20,7 @@ interface RootState {
         cells: number;
     };
     matrixData: {
-        matrixValues: { id: number | string; amount: number }[][];
+        matrixValues: { id: string; amount: number }[][];
         matrixRowsIds: string[];
         matrixRowsSum: number[];
         matrixColsSum: number[];
@@ -52,6 +52,9 @@ export const Matrix = () => {
         (state: RootState) => state.matrixData.matrixColsAvg,
     );
     const [nearestValues, setNearestValues] = useState([]);
+    const [sumPercentArray, setSumPercentArray] = useState<string[]>(['0%', '0%', '0%']);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isHoveredRowId, setIsHoveredRowId] = useState('');
 
     const handleAddRow = () => {
         const newRow = generateMatrixValues(matrixData[0].length, 1);
@@ -90,14 +93,12 @@ export const Matrix = () => {
 
     const increaseCellNumber = (id: string) => {
         let rowNum = 0;
-        let currCell = null;
         let cellIndex = 0;
         
         for (let rows = 0; rows < matrixData.length; rows++) {
             for (let cell = 0; cell < matrixData[rows].length; cell++) {
                 if (matrixData[rows][cell].id === id) {
                     rowNum = rows;
-                    currCell = matrixData[rows][cell];
                     cellIndex = cell;
                 }
             }
@@ -108,18 +109,31 @@ export const Matrix = () => {
 
     const findNearestCellNumbers = (id: string, amount: number) => {
         const currValue = amount;
-        const cellsValues = [].concat(...matrixData).filter(cell => cell.id !== id);
+        const cellsValues = [].concat(...matrixData).filter((cell: { id: string; amount: number }) => cell.id !== id);
 
-        cellsValues.sort((a, b) => {
+        cellsValues.sort((a: { id: string; amount: number }, b: { id: string; amount: number }) => {
             return Math.abs(currValue - a.amount) - Math.abs(currValue - b.amount);
         })
 
         return cellsValues.slice(0, cells);
     }
 
-    const handleMouseEnter = (id: string, amount: number) => setNearestValues(findNearestCellNumbers(id, amount));
+    const handleCellMouseEnter = (id: string, amount: number) => setNearestValues(findNearestCellNumbers(id, amount));
 
-    const handleMouseLeave = () => setNearestValues([]);
+    const handleCellMouseLeave = () => setNearestValues([]);
+
+    const handleSumCellMouseEnter = (rowSum: number, rowCells: {id: string, amount: number}[], rowId: string) => {
+        setIsHovered(true);
+        setIsHoveredRowId(rowId);
+        const sumPartPercents = rowCells.map(cell => ((cell.amount * 100) / rowSum).toFixed(2) + '%');
+        setSumPercentArray(sumPartPercents);
+    }
+
+    const handleSumCellMouseLeave = () => {
+        setIsHovered(false);
+        setIsHoveredRowId('');
+        setSumPercentArray(['0%', '0%', '0%']);
+    }
 
     return (
         matrixData.length !== 0 && (
@@ -150,22 +164,51 @@ export const Matrix = () => {
                         <Row className={css["Matrix-table__data"]}>
                             {matrixRowsIds.map((rowId, index) => (
                                 <div key={rowId} className={css["Matrix-table__row"]}>
-                                    { matrixData[index].map((item) => (
+                                    { 
+                                    isHoveredRowId === rowId?
+                                        matrixData[index].map((item, i) => (
+                                            <div 
+                                                key={item.id} 
+                                                className={cn(css["Matrix-table__cell"], 
+                                                    css["Matrix-table__cell-data"], 
+                                                    css["Matrix-table__cell-data_percentage"])} 
+                                                style={
+                                                    nearestValues.filter((cell: { id: string; amount: number }) => cell.id === item.id).length === 1 ? 
+                                                    {backgroundColor: 'rgb(255, 255, 0, 0.4)', "--percent": sumPercentArray[i]} as CSSProperties
+                                                    : {"--percent": sumPercentArray[i]} as CSSProperties
+                                                }
+                                                onClick={() => increaseCellNumber(item.id)}
+                                                onMouseEnter={() => handleCellMouseEnter(item.id, item.amount)}
+                                                onMouseLeave={handleCellMouseLeave}
+                                            >
+                                                {isHovered? sumPercentArray[i] : item.amount}
+                                            </div>
+                                        ))
+                                    :
+                                    matrixData[index].map(item => (
                                         <div 
                                             key={item.id} 
-                                            className={cn(css["Matrix-table__cell"], css["Matrix-table__cell-data"])} 
+                                            className={cn(css["Matrix-table__cell"], 
+                                                css["Matrix-table__cell-data"])} 
                                             style={
-                                                nearestValues.filter(cell => cell.id === item.id).length === 1 ? 
-                                                {backgroundColor: 'rgb(255, 255, 0, 0.4)'} 
-                                                : {}
+                                                nearestValues.filter((cell: { id: string; amount: number }) => cell.id === item.id).length === 1 ? 
+                                                {backgroundColor: 'rgb(255, 255, 0, 0.4)', "--percent": '0%'} as CSSProperties
+                                                : {"--percent": '0%'} as CSSProperties
                                             }
                                             onClick={() => increaseCellNumber(item.id)}
-                                            onMouseEnter={() => handleMouseEnter(item.id, item.amount)}
-                                            onMouseLeave={handleMouseLeave}>
+                                            onMouseEnter={() => handleCellMouseEnter(item.id, item.amount)}
+                                            onMouseLeave={handleCellMouseLeave}
+                                        >
                                             {item.amount}
                                         </div>
-                                    ))}
-                                    <div key={rowId} className={cn(css["Matrix-table__cell"], css["Matrix-table__sum-cell"])}>
+                                    ))
+                                    }
+                                    <div 
+                                        key={rowId} 
+                                        className={cn(css["Matrix-table__cell"], css["Matrix-table__sum-cell"])}
+                                        onMouseEnter={() => handleSumCellMouseEnter(matrixRowsSum[index], matrixData[index], rowId)}
+                                        onMouseLeave={handleSumCellMouseLeave}
+                                    >
                                         {matrixRowsSum[index]} 
                                     </div>
                                 </div>
@@ -190,6 +233,9 @@ export const Matrix = () => {
                         ))}
                         <span /> 
                     </Col>
+                    {/* <div className={cn(css["Matrix-table__cell-data"], css["Matrix-table__cell-data_percentage"])} style={{ "--percent": '80%' }}> 
+                        10%
+                    </div> */}
                 </section>
             </div>
         )
