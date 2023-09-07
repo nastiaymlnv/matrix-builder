@@ -12,6 +12,9 @@ const getInitialStore = () => {
     matrixData: {
       matrixValues: [],
       matrixRowsIds: [],
+      matrixRowsSum: [],
+      matrixColsSum: [],
+      matrixColsAvg: []
     },
   };
 };

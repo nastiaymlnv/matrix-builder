@@ -2,10 +2,12 @@ import {
   INIT_MATRIX_ROWS,
   INIT_MATRIX_COLS,
   INIT_MATRIX_CELLS,
+  INCREASE_ROW_AMOUNT,
+  DECREASE_ROW_AMOUNT
 } from "./matrixDimensionActions";
 
 type actionType = {
-  type: "INIT_MATRIX_COLS" | "INIT_MATRIX_ROWS" | "INIT_MATRIX_CELLS";
+  type: "INIT_MATRIX_COLS" | "INIT_MATRIX_ROWS" | "INIT_MATRIX_CELLS" | "INCREASE_ROW_AMOUNT" | "DECREASE_ROW_AMOUNT";
   payload: number;
 };
 
@@ -33,6 +35,12 @@ const matrixParamsReducer = (state = initialState, action: actionType) => {
       return {
         ...state,
         cells: action.payload,
+      };
+    case INCREASE_ROW_AMOUNT:
+    case DECREASE_ROW_AMOUNT:
+      return {
+        ...state,
+        rows: action.payload,
       };
     default:
       return state;

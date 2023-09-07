@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 const generateMatrixValues = (cols: number, rows: number) => {
   const randomArray = Array.from(
     { length: cols * rows },
-    () => Math.floor(Math.random() * 899) + 100,
+    () => Math.round(Math.random() * 899) + 100,
   );
   const refactoredArray = modifyArrayData(randomArray);
   const matrix = listToMatrix(refactoredArray, cols, rows);

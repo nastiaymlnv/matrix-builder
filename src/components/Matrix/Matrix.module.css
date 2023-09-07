@@ -28,11 +28,14 @@
 
 .Matrix-table__row-titles {
   margin-right: 10px;
+  text-align: center;
 }
 
 .Matrix-table__delete-row-icons {
   margin-left: 10px;
+  margin-top: 10px;
   cursor: pointer;
+  justify-content: space-evenly;
 }
 
 .Matrix-table__data {
@@ -43,9 +46,33 @@
   margin-bottom: 10px;
 }
 
-.Matrix-table__column {
+.Matrix-table__cell{
   padding: 10px;
   margin: 1px;
-  border: 1px solid rgba(5, 5, 5, 0.3);
+  border: 1px solid rgba(5, 5, 5, 0.5);
   border-radius: 5px;
+  width: 60px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.Matrix-table__cell-data {
+  &:hover {
+    background-color: rgb(0, 128, 0, 0.2);
+  }
+}
+
+.Matrix-table__sum-column {
+  margin-top: 11px;
+}
+
+.Matrix-table__sum-column-title {
+  font-weight: bold;
+}
+
+.Matrix-table__sum-cell, .Matrix-table__avg-cell {
+  border-width: 2px;
+  border-color: rgba(5, 5, 5, 0.5);
+  background-color: rgba(5, 5, 5, 0.1);
+  font-weight: 500;
 }

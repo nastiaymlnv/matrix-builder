@@ -3,6 +3,7 @@ import {
   initMatrixRowsIds,
   addNewRow,
   deleteRow,
+  increaseCellAmount
 } from "./matrixDataActions";
 
 import matrixDataReducer from "./matrixDataReducer";
@@ -12,5 +13,6 @@ export {
   initMatrixRowsIds,
   addNewRow,
   deleteRow,
+  increaseCellAmount,
   matrixDataReducer,
 };

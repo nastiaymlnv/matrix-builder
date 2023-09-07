@@ -50,17 +50,40 @@ export const CreateMatrixForm = ({ setIsSubmitted }: Props) => {
   };
 
   const submitCreateMatrix = () => {
-    const matrixValues = generateMatrixValues(+colsVal[1], +rowsVal[1]);
+    const cols = +colsVal[1];
+    const rows = +rowsVal[1];
+    const cells = +cellsVal[1];
+    const matrixValues = generateMatrixValues(cols, rows);
     const rowsIds = [];
+    const rowsSums = [];
+    const colsSums = [];
+    const colsAvg = [];
 
-    for (let i = 0; i < +rowsVal[1]; i++) {
+    for (let i = 0; i < rows; i++) {
       rowsIds.push(uuidv4());
     }
 
-    dispatch(initColumnsAmount(+colsVal[1]));
-    dispatch(initRowsAmount(+rowsVal[1]));
-    dispatch(initCellsAmount(+cellsVal[1]));
-    dispatch(initMatrixData(matrixValues));
+    for (let i = 0; i < matrixValues.length; i++) {
+      let rowSum = 0;
+      for (let j = 0; j < matrixValues[0].length; j++) {
+        rowSum += matrixValues[i][j].amount;
+      }
+      rowsSums.push(rowSum);
+    } 
+
+    for (let i = 0; i < matrixValues[0].length; i++) {
+      let colSum = 0;
+      for (let j = 0; j < matrixValues.length; j++) {
+        colSum += matrixValues[j][i].amount;
+      }
+      colsSums.push(colSum);
+      colsAvg.push(Math.round(colSum / rows));
+    } 
+
+    dispatch(initColumnsAmount(cols));
+    dispatch(initRowsAmount(rows));
+    dispatch(initCellsAmount(cells));
+    dispatch(initMatrixData([matrixValues, rowsSums, colsSums, colsAvg]));
     dispatch(initMatrixRowsIds(rowsIds));
 
     setIsSubmitted(true);
