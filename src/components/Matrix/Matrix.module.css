@@ -46,7 +46,7 @@
   margin-bottom: 10px;
 }
 
-.Matrix-table__cell{
+.Matrix-table__cell {
   padding: 10px;
   margin: 1px;
   border: 1px solid rgba(5, 5, 5, 0.5);
@@ -65,7 +65,7 @@
   }
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     top: calc(100% - var(--percent));
@@ -91,7 +91,8 @@
   font-weight: bold;
 }
 
-.Matrix-table__sum-cell, .Matrix-table__avg-cell {
+.Matrix-table__sum-cell,
+.Matrix-table__avg-cell {
   border-width: 2px;
   border-color: rgba(5, 5, 5, 0.5);
   background-color: rgba(5, 5, 5, 0.1);

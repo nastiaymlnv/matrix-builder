@@ -5,7 +5,12 @@ export const DELETE_ROW = "DELETE_ROW";
 export const INCREASE_CELL_AMOUNT = "INCREASE_CELL_AMOUNT";
 
 export const initMatrixData = (
-  value: [{ id: number | string; amount: number }[][], number[], number[], number[]],
+  value: [
+    { id: number | string; amount: number }[][],
+    number[],
+    number[],
+    number[],
+  ],
 ) => {
   return {
     type: INIT_MATRIX_VALUES,
@@ -21,7 +26,13 @@ export const initMatrixRowsIds = (value: string[]) => {
 };
 
 export const addNewRow = (
-  value: [{ id: number | string; amount: number }[][], string, number, number[], number[]],
+  value: [
+    { id: number | string; amount: number }[][],
+    string,
+    number,
+    number[],
+    number[],
+  ],
 ) => {
   return {
     type: ADD_NEW_ROW,
@@ -29,16 +40,24 @@ export const addNewRow = (
   };
 };
 
-export const deleteRow = (value: { id: string; index: number, newColsSum: number[], newColsAvg: number[] }) => {
+export const deleteRow = (value: {
+  id: string;
+  index: number;
+  newColsSum: number[];
+  newColsAvg: number[];
+}) => {
   return {
     type: DELETE_ROW,
     payload: value,
   };
 };
 
-export const increaseCellAmount = (value: {rowNum: number, cellIndex: number}) => {
+export const increaseCellAmount = (value: {
+  rowNum: number;
+  cellIndex: number;
+}) => {
   return {
     type: INCREASE_CELL_AMOUNT,
-    payload: value
+    payload: value,
   };
 };

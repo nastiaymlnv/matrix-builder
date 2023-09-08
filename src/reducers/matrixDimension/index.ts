@@ -3,7 +3,7 @@ import {
   initRowsAmount,
   initCellsAmount,
   increaseRowAmount,
-  decreaseRowAmount
+  decreaseRowAmount,
 } from "./matrixDimensionActions";
 
 import matrixParamsReducer from "./matrixDimensionReducer";

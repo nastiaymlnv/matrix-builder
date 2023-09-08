@@ -3,23 +3,28 @@ import {
   INIT_MATRIX_ROWS_IDS,
   ADD_NEW_ROW,
   DELETE_ROW,
-  INCREASE_CELL_AMOUNT
+  INCREASE_CELL_AMOUNT,
 } from "./matrixDataActions";
 
 type deleteRowActionType = {
   type: "DELETE_ROW";
-  payload: { id: string; index: number, newColsSum: number[], newColsAvg: number[] };
+  payload: {
+    id: string;
+    index: number;
+    newColsSum: number[];
+    newColsAvg: number[];
+  };
 };
 
 type increaseCellAmountActionType = {
   type: "INCREASE_CELL_AMOUNT";
-  payload: {rowNum: number, cellIndex: number};
+  payload: { rowNum: number; cellIndex: number };
 };
 
 type actionType =
   | {
       type: "INIT_MATRIX_VALUES" | "INIT_MATRIX_ROWS_IDS" | "ADD_NEW_ROW";
-      payload: { id: string; amount: number }[][]
+      payload: { id: string; amount: number }[][];
     }
   | deleteRowActionType
   | increaseCellAmountActionType;
@@ -32,9 +37,9 @@ const initialState = {
   matrixColsAvg: [] as number[],
 };
 
-const matrixParamsReducer = ( state = initialState, action: actionType) => {
+const matrixParamsReducer = (state = initialState, action: actionType) => {
   switch (action.type) {
-    case INIT_MATRIX_VALUES:{
+    case INIT_MATRIX_VALUES: {
       const [matrixValues, rowsSums, colsSums, colsAvg] = action.payload;
 
       return {
@@ -42,15 +47,15 @@ const matrixParamsReducer = ( state = initialState, action: actionType) => {
         matrixValues: matrixValues,
         matrixRowsSum: rowsSums,
         matrixColsSum: colsSums,
-        matrixColsAvg: colsAvg
-      }
+        matrixColsAvg: colsAvg,
+      };
     }
     case INIT_MATRIX_ROWS_IDS:
       return {
         ...state,
         matrixRowsIds: action.payload,
       };
-    case ADD_NEW_ROW: { 
+    case ADD_NEW_ROW: {
       const [newRow, rowId, rowSum, newColsSum, newColsAvg] = action.payload;
 
       return {
@@ -60,7 +65,7 @@ const matrixParamsReducer = ( state = initialState, action: actionType) => {
         matrixRowsSum: [...state.matrixRowsSum, rowSum],
         matrixColsSum: newColsSum,
         matrixColsAvg: newColsAvg,
-      }
+      };
     }
     case DELETE_ROW: {
       const { id, index, newColsSum, newColsAvg } = action.payload;
@@ -69,21 +74,21 @@ const matrixParamsReducer = ( state = initialState, action: actionType) => {
 
       return {
         ...state,
-        matrixRowsIds: state.matrixRowsIds.filter(
-          (currId) => currId !== id,
-        ),
+        matrixRowsIds: state.matrixRowsIds.filter((currId) => currId !== id),
         matrixColsSum: newColsSum,
         matrixColsAvg: newColsAvg,
       };
     }
     case INCREASE_CELL_AMOUNT: {
-      const {rowNum, cellIndex} = action.payload;
+      const { rowNum, cellIndex } = action.payload;
       const newState = { ...state };
 
       newState.matrixValues[rowNum][cellIndex].amount += 1;
       newState.matrixRowsSum[rowNum] += 1;
       newState.matrixColsSum[cellIndex] += 1;
-      newState.matrixColsAvg[cellIndex] = Math.round(newState.matrixColsSum[cellIndex] / newState.matrixValues.length);
+      newState.matrixColsAvg[cellIndex] = Math.round(
+        newState.matrixColsSum[cellIndex] / newState.matrixValues.length,
+      );
 
       return newState;
     }

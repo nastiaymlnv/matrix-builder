@@ -10,7 +10,7 @@ function App() {
   return (
     <>
       <CreateMatrixForm setIsSubmitted={setIsSubmitted} />
-      {isSubmitted === true && <Matrix />}
+      {isSubmitted && <Matrix />}
     </>
   );
 }

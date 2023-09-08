@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-
 import { v4 as uuidv4 } from "uuid";
-
 import { Typography, Space, List, InputNumber, Button } from "antd";
 
 import {
@@ -14,6 +12,8 @@ import {
 import { initMatrixData, initMatrixRowsIds } from "../../reducers/matrixData";
 
 import generateMatrixValues from "../../helpers/generateMatrixValues";
+import calculateRowSum from "./calculateRowSum";
+import calculateColAvg from "./calculateColAvg";
 
 import { listData } from "./listData";
 
@@ -30,21 +30,21 @@ export const CreateMatrixForm = ({ setIsSubmitted }: Props) => {
 
   const [colsVal, setColsVal] = useState<(string | number)[]>([]);
   const [rowsVal, setRowsVal] = useState<(string | number)[]>([]);
-  const [cellsVal, setCellsVal] = useState<(string | number)[]>([]);
 
   const handleInput = (e: number | null, id: string) => {
-    const value: number = e ? e : 1;
-    setIsSubmitted(false);
+    const value: number = e ? e : 0;
 
     switch (id) {
       case "columns":
+        setIsSubmitted(false);
         setColsVal([id, value]);
         break;
       case "rows":
+        setIsSubmitted(false);
         setRowsVal([id, value]);
         break;
       case "cells":
-        setCellsVal([id, value]);
+        dispatch(initCellsAmount(value));
         break;
     }
   };
@@ -52,37 +52,17 @@ export const CreateMatrixForm = ({ setIsSubmitted }: Props) => {
   const submitCreateMatrix = () => {
     const cols = +colsVal[1];
     const rows = +rowsVal[1];
-    const cells = +cellsVal[1];
     const matrixValues = generateMatrixValues(cols, rows);
+    const rowsSums = calculateRowSum(matrixValues);
+    const [colsSums, colsAvg] = calculateColAvg(matrixValues, rows);
     const rowsIds = [];
-    const rowsSums = [];
-    const colsSums = [];
-    const colsAvg = [];
 
     for (let i = 0; i < rows; i++) {
       rowsIds.push(uuidv4());
     }
 
-    for (let i = 0; i < matrixValues.length; i++) {
-      let rowSum = 0;
-      for (let j = 0; j < matrixValues[0].length; j++) {
-        rowSum += matrixValues[i][j].amount;
-      }
-      rowsSums.push(rowSum);
-    } 
-
-    for (let i = 0; i < matrixValues[0].length; i++) {
-      let colSum = 0;
-      for (let j = 0; j < matrixValues.length; j++) {
-        colSum += matrixValues[j][i].amount;
-      }
-      colsSums.push(colSum);
-      colsAvg.push(Math.round(colSum / rows));
-    } 
-
     dispatch(initColumnsAmount(cols));
     dispatch(initRowsAmount(rows));
-    dispatch(initCellsAmount(cells));
     dispatch(initMatrixData([matrixValues, rowsSums, colsSums, colsAvg]));
     dispatch(initMatrixRowsIds(rowsIds));
 
@@ -100,7 +80,7 @@ export const CreateMatrixForm = ({ setIsSubmitted }: Props) => {
             <List.Item>
               <Typography>{Object.values(item)}</Typography>
               <InputNumber
-                min={1}
+                min={item.cells ? 0 : 1}
                 max={100}
                 onChange={(e) => handleInput(e, Object.keys(item)[0])}
                 className={css["CreateMatrixForm-list__item-input"]}
