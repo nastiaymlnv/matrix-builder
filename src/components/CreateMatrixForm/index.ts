@@ -1,3 +1,1 @@
-import { CreateMatrixForm } from "./CreateMatrixForm";
-
-export { CreateMatrixForm };
+export * from "./CreateMatrixForm";

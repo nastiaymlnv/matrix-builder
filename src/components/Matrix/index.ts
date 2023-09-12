@@ -1,3 +1,1 @@
-import { Matrix } from "./Matrix";
-
-export { Matrix };
+export * from "./Matrix";

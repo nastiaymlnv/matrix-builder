@@ -1,17 +1,17 @@
-.CreateMatrixForm {
+.Form-wrapper {
   display: flex;
   flex-direction: column;
   margin-top: 20px;
 }
 
-.CreateMatrixForm-container {
+.Form-container {
   flex-direction: column;
 }
 
-.CreateMatrixForm-list__item-input {
+.Form__list-item {
   margin-left: 20px;
 }
 
-.CreateMatrixForm-btn {
+.Form-btn {
   margin-top: 20px;
 }

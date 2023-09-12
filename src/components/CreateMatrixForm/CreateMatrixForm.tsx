@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+
 import { v4 as uuidv4 } from "uuid";
 import { Typography, Space, List, InputNumber, Button } from "antd";
 
@@ -21,11 +22,11 @@ import css from "./CreateMatrixForm.module.css";
 
 const { Title } = Typography;
 
-interface Props {
+interface ICreateMatrixFormProps {
   setIsSubmitted: (value: boolean) => void;
 }
 
-export const CreateMatrixForm = ({ setIsSubmitted }: Props) => {
+export const CreateMatrixForm: React.FC<ICreateMatrixFormProps> = ({ setIsSubmitted }) => {
   const dispatch = useDispatch();
 
   const [colsVal, setColsVal] = useState<(string | number)[]>([]);
@@ -70,9 +71,9 @@ export const CreateMatrixForm = ({ setIsSubmitted }: Props) => {
   };
 
   return (
-    <Space className={css["CreateMatrixForm"]}>
+    <Space className={css["Form-wrapper"]}>
       <Title>Matrix Builder</Title>
-      <Space className={css["CreateMatrixForm-container"]}>
+      <Space className={css["Form-container"]}>
         <List
           bordered
           dataSource={listData}
@@ -83,7 +84,7 @@ export const CreateMatrixForm = ({ setIsSubmitted }: Props) => {
                 min={item.cells ? 0 : 1}
                 max={100}
                 onChange={(e) => handleInput(e, Object.keys(item)[0])}
-                className={css["CreateMatrixForm-list__item-input"]}
+                className={css["Form__list-item"]}
               />
             </List.Item>
           )}
@@ -91,7 +92,7 @@ export const CreateMatrixForm = ({ setIsSubmitted }: Props) => {
         <Button
           type="primary"
           onClick={submitCreateMatrix}
-          className={css["CreateMatrixForm-btn"]}
+          className={css["Form-btn"]}
         >
           Create matrix
         </Button>

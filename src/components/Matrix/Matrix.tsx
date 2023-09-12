@@ -1,5 +1,6 @@
 import React, { useState, CSSProperties } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import cn from "classnames";
 import { v4 as uuidv4 } from "uuid";
 import { Divider, Button, Row, Col } from "antd";
@@ -72,10 +73,10 @@ export const Matrix = () => {
 
   const handleAddRow = () => {
     const newRow = generateMatrixValues(matrixData[0].length, 1);
-
-    let rowSum = 0;
+    const rowId = uuidv4();
     const newColsSum = [];
     const newColsAvg = [];
+    let rowSum = 0;
 
     for (let i = 0; i < newRow[0].length; i++) {
       const colSum = matrixColsSum[i] + Number(newRow[0][i].amount);
@@ -83,8 +84,6 @@ export const Matrix = () => {
       newColsSum.push(colSum);
       newColsAvg.push(Math.round(colSum / (rows + 1)));
     }
-
-    const rowId = uuidv4();
 
     dispatch(addNewRow([newRow, rowId, rowSum, newColsSum, newColsAvg]));
     dispatch(increaseRowAmount(rows + 1));
@@ -154,7 +153,7 @@ export const Matrix = () => {
     setAvgSumPercentArray(sumPartPercents);
   };
 
-  const customStyle = (rowId: string, cellId: string, index: number) => {
+  const setCustomStyle = (rowId: string, cellId: string, index: number) => {
     const hoveredCell = nearestValues.filter(
       (cell: { id: string; amount: number }) => cell.id === cellId,
     );
@@ -173,11 +172,11 @@ export const Matrix = () => {
 
   return (
     matrixData.length !== 0 && (
-      <div className={css["Matrix"]}>
+      <div className={css["Matrix-container"]}>
         <Divider />
         <Button
           type="primary"
-          className={css["Matrix-btn"]}
+          className={css["Matrix-add-btn"]}
           onClick={handleAddRow}
         >
           Add a row
@@ -209,7 +208,7 @@ export const Matrix = () => {
                         isHoveredRowId === rowId &&
                           css["Matrix-table__cell-data_percentage"],
                       )}
-                      style={customStyle(rowId, cell.id, i)}
+                      style={setCustomStyle(rowId, cell.id, i)}
                       onClick={() => increaseCellNumber(cell.id)}
                       onMouseOver={() =>
                         handleCellMouseOver(cell.id, cell.amount)

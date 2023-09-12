@@ -1,10 +1,10 @@
-.Matrix {
+.Matrix-container {
   width: fit-content;
   margin: 0 auto;
   margin-top: 20px;
 }
 
-.Matrix-btn {
+.Matrix-add-btn {
   margin-bottom: 20px;
 }
 
